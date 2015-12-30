@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   root to: "users#new"
   get "/auth/:provider/callback" => "sessions#create"
   get "/signout" => "sessions#destroy", :as => :signout
-  get "/select_repo" => "webhooks#select_repo", :as => :select_repo
+  get "/select_repo" => "webhooks#list_repos", :as => :select_repo
   post "/create_webhook" => "webhooks#create", :as => :create_webhook
 
   # Example of regular route:
