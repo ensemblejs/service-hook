@@ -11,13 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151228062834) do
+ActiveRecord::Schema.define(version: 20151230012919) do
 
   create_table "users", force: :cascade do |t|
     t.string   "provider"
     t.string   "uid"
     t.string   "name"
     t.string   "token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "login"
+    t.string   "avatar_url"
+  end
+
+  create_table "webhooks", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "repo_name"
+    t.string   "url"
+    t.string   "test_url"
+    t.string   "ping_url"
+    t.boolean  "active"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

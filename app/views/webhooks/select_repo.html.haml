@@ -1,0 +1,7 @@
+= form_tag create_webhook_url :method => :post do
+  - @repos.each do |repo_name|
+    .option
+      = radio_button_tag 'repo', repo_name
+      = label_tag "repo_#{repo_name}", repo_name
+  .submit
+    = submit_tag "Submit"
