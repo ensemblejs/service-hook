@@ -16,4 +16,15 @@ class User < ActiveRecord::Base
       user.avatar_url = github_user[:avatar_url]
     end
   end
+
+  def create_game repo_name
+    Game.create_for_user self.login
+  end
+
+  private
+
+  def github_identifier repo_name
+    "#{self.login}/#{repo_name}"
+  end
+
 end
