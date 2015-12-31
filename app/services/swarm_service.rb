@@ -1,5 +1,8 @@
 class SwarmService
-  def self.create_game user_name, repo_name
+
+
+
+  def self.create_game user_name, repo_name, commit_hash
     Docker::Container.create( 'Env' => ["github_user=#{user_name}",
                                         "github_repo=#{repo_name}",
                                         "SERVICE_TAGS=#{repo}.#{user_name}",
@@ -13,7 +16,7 @@ class SwarmService
 
   end
 
-  def self.list_games user
+  def self.list_games user_name
     Docker::Container.all(all: true, filters: { label: ["com.ensemblejs.user=#{user_name}"]})
   end
 end

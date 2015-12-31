@@ -2,8 +2,8 @@ class WebhooksController < ApplicationController
 
   def create
     @repo = "#{current_user.login}/#{repo_name_param}"
-    resp = GithubService.create_webhook(current_user.login, current_user.token, repo_name_param)
-    if resp[:errors].empty? && Webhook.create(resp[:params])
+    # resp = GithubService.create_webhook(current_user.token, repo_name_param)
+    if resp = current_user.create_webhook
       render "create_success"
     else
       @errors = resp[:errors]

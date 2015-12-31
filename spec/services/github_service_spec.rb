@@ -19,14 +19,15 @@ RSpec.describe GithubService, type: :service do
 
   before do
     @client = double('Octokit::Client')
+
     @correct_response = double('response')
     allow(@correct_response).to receive(:to_attrs).and_return({
-                                                                url: 'url',
-                                                                test_url: 'test_url',
-                                                                ping_url: 'ping',
+                                                                id: 57,
                                                                 ship_class: 'firefly',
                                                                 active: true
                                                               })
+    allow(@client).to receive(:user)
+                        .and_return({login: 'mal_reynolds', avatar_url: 'serenity.com/mal.jpg'})
     allow(Octokit::Client).to receive(:new).and_return(@client)
   end
 
@@ -35,11 +36,8 @@ RSpec.describe GithubService, type: :service do
                         .with(*webhook_params)
                         .and_return(@correct_response)
 
-    expect(GithubService.create_webhook('mal_reynolds', '57', 'serenity'))
-      .to eq( url: 'url',
-              test_url: 'test_url',
-              ping_url: 'ping',
-              active: true,
+    expect(GithubService.create_webhook('2459', 'serenity'))
+      .to eq( id: 57,
               errors: {})
   end
 
@@ -47,7 +45,7 @@ RSpec.describe GithubService, type: :service do
     expect(@client).to receive(:create_hook)
                         .with(*webhook_params)
                         .and_raise(Octokit::NotFound)
-    expect(GithubService.create_webhook('mal_reynolds', '57', 'serenity'))
+    expect(GithubService.create_webhook('2459', 'serenity'))
       .to eq(errors: {
                 not_found_404: "Something about a 404, or even a proper translation dealy"
              })
@@ -57,7 +55,7 @@ RSpec.describe GithubService, type: :service do
     expect(@client).to receive(:create_hook)
                         .with(*webhook_params)
                         .and_raise(Octokit::UnprocessableEntity)
-    expect(GithubService.create_webhook('mal_reynolds', '57', 'serenity'))
+    expect(GithubService.create_webhook('2459', 'serenity'))
       .to eq(errors: {
                 unprocessable_entity_422: "Something about a 422, or even a proper translation dealy"
              })

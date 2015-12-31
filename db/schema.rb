@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151230021417) do
+ActiveRecord::Schema.define(version: 20151231023437) do
 
   create_table "games", force: :cascade do |t|
     t.string   "repo_name"
@@ -21,6 +21,11 @@ ActiveRecord::Schema.define(version: 20151230021417) do
   end
 
   add_index "games", ["user_id"], name: "index_games_on_user_id"
+
+  create_table "repositories", force: :cascade do |t|
+    t.string  "name"
+    t.integer "users_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "provider"
@@ -40,8 +45,11 @@ ActiveRecord::Schema.define(version: 20151230021417) do
     t.string   "test_url"
     t.string   "ping_url"
     t.boolean  "active"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.integer  "repository_id"
   end
+
+  add_index "webhooks", ["repository_id"], name: "index_webhooks_on_repository_id"
 
 end
